@@ -19,8 +19,11 @@ RUN a2enmod rewrite
 # Set working directory
 WORKDIR /var/www/html
 
+# Set composer memory limit
+ENV COMPOSER_MEMORY_LIMIT=-1
+
 # Install dependency Laravel
-RUN composer install --no-dev --optimize-autoloader
+RUN composer install --no-dev --optimize-autoloader -vvv
 
 # Expose port 80
 EXPOSE 80 
