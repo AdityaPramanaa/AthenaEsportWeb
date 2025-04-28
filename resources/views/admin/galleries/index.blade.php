@@ -20,11 +20,11 @@
                 <div class="bg-gray-50 rounded-xl shadow hover:shadow-lg transition overflow-hidden flex flex-col">
                     <img src="{{ asset('storage/' . $gallery->image_path) }}" class="w-full h-48 object-cover" alt="{{ $gallery->title }}">
                     <div class="p-4 flex-1 flex flex-col">
-                        <h5 class="font-semibold text-lg mb-1 text-gray-900">{{ $gallery->title }}</h5>
+                        <h5 class="font-semibold text-lg mb-1 text-black">{{ $gallery->title }}</h5>
                         @if($gallery->event)
-                            <p class="text-xs text-gray-500 mb-1">Event: {{ $gallery->event->title }}</p>
+                            <p class="text-xs text-black mb-1">Event: {{ $gallery->event->title }}</p>
                         @endif
-                        <p class="text-sm text-gray-900 flex-1">{{ Str::limit($gallery->description, 100) }}</p>
+                        <p class="text-sm text-black flex-1">{{ Str::limit($gallery->description, 100) }}</p>
                         <div class="flex gap-2 mt-4">
                             <a href="{{ route('admin.galleries.edit', $gallery) }}" class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 flex items-center gap-1"><i class="fas fa-edit"></i> Edit</a>
                             <form action="{{ route('admin.galleries.destroy', $gallery) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus galeri ini?')">

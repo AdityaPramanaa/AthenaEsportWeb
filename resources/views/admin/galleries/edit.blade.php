@@ -1,180 +1,123 @@
-@extends('layouts.admin')
+@extends('layouts.admin-tailwind')
 
 @section('title', 'Edit Galeri')
 
 @section('content')
-<div class="container-fluid">
-    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">Edit Galeri</h1>
-        <a href="{{ route('admin.galleries.index') }}" class="btn btn-secondary shadow-sm">
-            <i class="fas fa-arrow-left fa-sm text-white-50 me-2"></i>Kembali
-        </a>
-    </div>
-
-    <div class="card shadow mb-4">
-        <div class="card-body">
-            <form action="{{ route('admin.galleries.update', $gallery) }}" method="POST" enctype="multipart/form-data">
+<div class="px-2 md:px-6 py-6">
+    <div class="max-w-4xl mx-auto">
+        <div class="flex items-center justify-between mb-6">
+            <h1 class="text-2xl font-bold text-gray-900">Edit Galeri</h1>
+            <a href="{{ route('admin.galleries.index') }}" class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600 flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Kembali
+            </a>
+        </div>
+        <div class="bg-white rounded-xl shadow overflow-hidden">
+            <form action="{{ route('admin.galleries.update', $gallery) }}" method="POST" enctype="multipart/form-data" id="editGalleryForm" class="p-6">
                 @csrf
                 @method('PUT')
-                
-                <div class="row">
-                    <div class="col-12 mb-3">
-                        <label for="title" class="form-label">Judul Galeri <span class="text-danger">*</span></label>
-                        <input type="text" class="form-control @error('title') is-invalid @enderror" 
-                               id="title" name="title" value="{{ old('title', $gallery->title) }}" required>
-                        @error('title')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="md:col-span-2">
+                        <label for="title" class="block text-sm font-medium text-gray-700">Judul Galeri <span class="text-red-500">*</span></label>
+                        <input type="text" name="title" id="title" value="{{ old('title', $gallery->title) }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-black">
+                        @error('title')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
-
-                    <div class="col-12 mb-3">
-                        <label for="description" class="form-label">Deskripsi <span class="text-danger">*</span></label>
-                        <textarea class="form-control @error('description') is-invalid @enderror" 
-                                  id="description" name="description" rows="4" required>{{ old('description', $gallery->description) }}</textarea>
-                        @error('description')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                    <div class="md:col-span-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi <span class="text-red-500">*</span></label>
+                        <textarea name="description" id="description" rows="4" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-black">{{ old('description', $gallery->description) }}</textarea>
+                        @error('description')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
-
-                    <div class="col-12 col-md-6 mb-3">
-                        <label for="status" class="form-label">Status <span class="text-danger">*</span></label>
-                        <select class="form-select @error('status') is-invalid @enderror" 
-                                id="status" name="status" required>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700">Status <span class="text-red-500">*</span></label>
+                        <select name="status" id="status" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-black">
                             <option value="draft" {{ old('status', $gallery->status) == 'draft' ? 'selected' : '' }}>Draft</option>
                             <option value="published" {{ old('status', $gallery->status) == 'published' ? 'selected' : '' }}>Published</option>
                         </select>
-                        @error('status')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        @error('status')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
-
-                    <div class="col-12 mb-3">
-                        <label for="image" class="form-label">Gambar</label>
+                    <div class="md:col-span-2">
+                        <label for="image" class="block text-sm font-medium text-gray-700">Gambar</label>
                         @if($gallery->image_path)
-                            <div class="mb-2">
-                                <img src="{{ asset('storage/' . $gallery->image_path) }}" alt="{{ $gallery->title }}" class="img-thumbnail" style="max-height: 200px">
+                            <div class="mt-2">
+                                <label class="block text-xs text-gray-500 mb-1">Gambar Saat Ini:</label>
+                                <img src="{{ asset('storage/' . $gallery->image_path) }}" alt="{{ $gallery->title }}" class="max-h-48 rounded shadow">
                             </div>
                         @endif
-                        <input type="file" class="form-control @error('image') is-invalid @enderror" 
-                               id="image" name="image" accept="image/*">
-                        <div class="form-text">Format: JPG, JPEG, PNG (Max. 2MB). Biarkan kosong jika tidak ingin mengubah gambar.</div>
-                        @error('image')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        <input type="file" name="image" id="image" accept="image/*" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                        <span class="text-xs text-gray-400">Format: JPG, JPEG, PNG (Max. 2MB). Biarkan kosong jika tidak ingin mengubah gambar.</span>
+                        @error('image')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
+                        <div id="imagePreview" class="mt-2 hidden">
+                            <label class="block text-xs text-gray-500 mb-1">Preview Gambar Baru:</label>
+                            <img src="#" alt="Preview" class="max-h-48 rounded shadow">
+                        </div>
                     </div>
-
-                    <div class="col-12 mb-3">
-                        <label for="event_id" class="form-label">Event (Opsional)</label>
-                        <select class="form-control @error('event_id') is-invalid @enderror" id="event_id" name="event_id">
+                    <div class="md:col-span-2">
+                        <label for="event_id" class="block text-sm font-medium text-gray-700">Event (Opsional)</label>
+                        <select name="event_id" id="event_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-black">
                             <option value="">Pilih Event</option>
                             @foreach($events as $event)
-                                <option value="{{ $event->id }}" {{ old('event_id', $gallery->event_id) == $event->id ? 'selected' : '' }}>
-                                    {{ $event->title }}
-                                </option>
+                                <option value="{{ $event->id }}" {{ old('event_id', $gallery->event_id) == $event->id ? 'selected' : '' }}>{{ $event->title }}</option>
                             @endforeach
                         </select>
-                        @error('event_id')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
+                        @error('event_id')<p class="mt-1 text-sm text-red-600">{{ $message }}</p>@enderror
                     </div>
                 </div>
-
-                <div class="d-flex justify-content-end gap-2">
-                    <button type="reset" class="btn btn-secondary">Reset</button>
-                    <button type="submit" class="btn btn-primary" id="submitBtn">
-                        <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                <div class="mt-6 flex flex-col md:flex-row justify-end gap-2">
+                    <button type="reset" class="bg-gray-200 text-gray-700 px-6 py-2 rounded hover:bg-gray-300">Reset</button>
+                    <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 flex items-center gap-2" id="submitBtn">
+                        <svg class="animate-spin h-4 w-4 mr-2 hidden" id="spinner" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path></svg>
                         Simpan Perubahan
                     </button>
                 </div>
             </form>
         </div>
-    </div>
-
-    <!-- Delete Gallery Card -->
-    <div class="card shadow mb-4 border-left-danger">
-        <div class="card-body">
-            <h5 class="card-title text-danger">Hapus Galeri</h5>
-            <p class="card-text">Perhatian: Tindakan ini tidak dapat dibatalkan dan akan menghapus galeri ini secara permanen.</p>
-            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
-                <i class="fas fa-trash fa-sm me-2"></i>Hapus Galeri
-            </button>
+        <!-- Card Hapus Galeri -->
+        <div class="bg-white rounded-xl shadow border border-red-200 mt-8">
+            <div class="p-6">
+                <h5 class="text-lg font-semibold text-red-600 mb-2">Hapus Galeri</h5>
+                <p class="text-gray-700 mb-4">Perhatian: Tindakan ini tidak dapat dibatalkan dan akan menghapus galeri ini secara permanen.</p>
+                <button type="button" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 flex items-center gap-2" onclick="document.getElementById('deleteModal').classList.remove('hidden')">
+                    <i class="fas fa-trash"></i> Hapus Galeri
+                </button>
+            </div>
         </div>
-    </div>
-</div>
-
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <p>Apakah Anda yakin ingin menghapus galeri <strong>{{ $gallery->title }}</strong>?</p>
-                <p class="text-danger mb-0">Tindakan ini tidak dapat dibatalkan.</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                <form action="{{ route('admin.galleries.destroy', $gallery->id) }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn btn-danger">Hapus</button>
-                </form>
+        <!-- Modal Konfirmasi Hapus -->
+        <div id="deleteModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+            <div class="bg-white rounded-lg shadow-lg w-full max-w-md mx-auto p-6">
+                <h5 class="text-lg font-semibold mb-2">Konfirmasi Hapus</h5>
+                <p class="mb-2">Apakah Anda yakin ingin menghapus galeri <strong>{{ $gallery->title }}</strong>?</p>
+                <p class="text-red-600 mb-4">Tindakan ini tidak dapat dibatalkan.</p>
+                <div class="flex justify-end gap-2">
+                    <button type="button" class="bg-gray-200 text-gray-700 px-4 py-2 rounded hover:bg-gray-300" onclick="document.getElementById('deleteModal').classList.add('hidden')">Batal</button>
+                    <form action="{{ route('admin.galleries.destroy', $gallery->id) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Hapus</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
 </div>
 @endsection
 
-@push('css')
-<style>
-    .form-label {
-        font-weight: 500;
-    }
-    
-    @media (max-width: 768px) {
-        .card-body {
-            padding: 1rem;
-        }
-        
-        .btn {
-            width: 100%;
-            margin-bottom: 0.5rem;
-        }
-        
-        .d-flex.justify-content-end {
-            flex-direction: column;
-        }
-        
-        .gap-2 {
-            gap: 0.5rem !important;
-        }
-    }
-</style>
-@endpush
-
 @push('scripts')
 <script>
-$(document).ready(function() {
     // Preview gambar yang dipilih
-    $('#image').change(function() {
+    document.getElementById('image')?.addEventListener('change', function(e) {
         const file = this.files[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = function(e) {
-                $('#imagePreview img').attr('src', e.target.result);
-                $('#imagePreview').removeClass('d-none');
+            reader.onload = function(ev) {
+                document.querySelector('#imagePreview img').src = ev.target.result;
+                document.getElementById('imagePreview').classList.remove('hidden');
             }
             reader.readAsDataURL(file);
         }
     });
-
     // Handle form submission
-    $('#editGalleryForm').on('submit', function() {
-        $('#submitBtn').prop('disabled', true);
-        $('#submitBtn .spinner-border').removeClass('d-none');
+    document.getElementById('editGalleryForm')?.addEventListener('submit', function() {
+        document.getElementById('submitBtn').disabled = true;
+        document.getElementById('spinner').classList.remove('hidden');
     });
-});
 </script>
 @endpush 

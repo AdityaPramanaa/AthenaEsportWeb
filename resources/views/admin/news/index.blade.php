@@ -32,12 +32,12 @@
                             <span class="text-gray-400">No image</span>
                         @endif
                     </td>
-                    <td class="px-4 py-2 text-gray-900">{{ $item->title }}</td>
-                    <td class="px-4 py-2 text-gray-900">{{ ucfirst($item->type) }}</td>
+                    <td class="px-4 py-2 text-black">{{ $item->title }}</td>
+                    <td class="px-4 py-2 text-black">{{ ucfirst($item->type) }}</td>
                     <td class="px-4 py-2">
                         <span class="px-2 py-0.5 rounded text-xs {{ $item->status == 'published' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600' }}">{{ ucfirst($item->status) }}</span>
                     </td>
-                    <td class="px-4 py-2 text-gray-900">{{ $item->created_at->format('d M Y') }}</td>
+                    <td class="px-4 py-2 text-black">{{ $item->created_at->format('d M Y') }}</td>
                     <td class="px-4 py-2 flex flex-wrap gap-2">
                         <a href="{{ route('admin.news.show', $item->id) }}" class="bg-blue-500 text-white px-3 py-1 rounded text-xs hover:bg-blue-600 flex items-center gap-1"><i class="fas fa-eye"></i> Detail</a>
                         <a href="{{ route('admin.news.edit', $item->id) }}" class="bg-yellow-500 text-white px-3 py-1 rounded text-xs hover:bg-yellow-600 flex items-center gap-1"><i class="fas fa-edit"></i> Edit</a>
