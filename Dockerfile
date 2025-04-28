@@ -22,6 +22,9 @@ WORKDIR /var/www/html
 # Set composer memory limit
 ENV COMPOSER_MEMORY_LIMIT=-1
 
+# Allow composer to run as superuser
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
 # Install dependency Laravel
 RUN composer install --no-dev --optimize-autoloader -vvv
 
